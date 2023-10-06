@@ -387,6 +387,7 @@ function wpcom_launchpad_get_task_definitions() {
 				return '/domains/add/' . $data['site_slug_encoded'] . '?from=my-home';
 			},
 			'body_callback'        => 'wpcom_launchpad_domain_customize_body',
+			'body_context'         => array( 'launchpad-navigator' ),
 		),
 
 		'share_site'                      => array(
