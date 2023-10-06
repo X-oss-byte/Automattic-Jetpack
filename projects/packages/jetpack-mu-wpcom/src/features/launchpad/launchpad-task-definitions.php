@@ -386,6 +386,7 @@ function wpcom_launchpad_get_task_definitions() {
 				// that are not in the Customer Home page. We should find a better way to handle this.
 				return '/domains/add/' . $data['site_slug_encoded'] . '?from=my-home';
 			},
+			'body_callback'        => 'wpcom_launchpad_domain_customize_body',
 		),
 
 		'share_site'                      => array(
@@ -1755,3 +1756,70 @@ function wpcom_trigger_email_campaign() {
 	);
 }
 add_action( 'update_option_launchpad_checklist_tasks_statuses', 'wpcom_trigger_email_campaign', 10, 3 );
+
+/**
+ * Adds a task component.
+ *
+ * @param string $type    The type of the component ('text' or 'link').
+ * @param string $content The content of the component.
+ * @param array  $options Additional options for the component (optional).
+ * @return array The task component.
+ */
+function wpcom_launchpad_add_task_component( $type, $content, $options = array() ) {
+	// Add validation and sanitization checks if necessary.
+
+	return array(
+		'type'    => $type,
+		'content' => $content,
+		'options' => $options,
+	);
+}
+
+/**
+ * Adds a text task component.
+ *
+ * @param string $text The text content of the component.
+ * @return array The text task component.
+ */
+function wpcom_launchpad_task_component_text( $text ) {
+	return wpcom_launchpad_add_task_component( 'text', $text );
+}
+
+/**
+ * Adds a link task component.
+ *
+ * @param string $label The label (text) of the link.
+ * @param string $href  The URL of the link.
+ * @return array The link task component.
+ */
+function wpcom_launchpad_task_component_link( $label, $href ) {
+	return wpcom_launchpad_add_task_component( 'link', $label, array( 'href' => $href ) );
+}
+
+/**
+ * Adds the a body to the domain customize task.
+ *
+ * @return array The body of the domain customize task.
+ */
+function wpcom_launchpad_domain_customize_body() {
+	// if the filter is true, we should return null
+	if ( ! apply_filters( 'wpcom_launchpad_domain_customize_body_enabled', false ) ) {
+		return null;
+	}
+
+	return array(
+		wpcom_launchpad_task_component_text(
+			__( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in tellus id eros scelerisque eleifend eget quis dui. Aenean eget sem non ex pulvinar commodo. Aliquam vel justo id ex rutrum faucibus id eu mi.', 'jetpack-mu-wpcom' )
+		),
+		array(
+			wpcom_launchpad_task_component_link(
+				__( 'Learn more about customizing your domain', 'jetpack-mu-wpcom' ),
+				'https://wordpress.com/support/domains/customize-your-domain/'
+			),
+			wpcom_launchpad_task_component_link(
+				__( 'Help', 'jetpack-mu-wpcom' ),
+				'https://wordpress.com/support/domains/customize-your-domain/'
+			),
+		),
+	);
+}
