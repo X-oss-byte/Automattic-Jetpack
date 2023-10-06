@@ -1803,24 +1803,5 @@ function wpcom_launchpad_task_component_link( $label, $href ) {
  * @return array The body of the domain customize task.
  */
 function wpcom_launchpad_domain_customize_body() {
-	// if the filter is true, we should return null
-	if ( ! apply_filters( 'wpcom_launchpad_domain_customize_body_enabled', false ) ) {
-		return null;
-	}
-
-	return array(
-		wpcom_launchpad_task_component_text(
-			__( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in tellus id eros scelerisque eleifend eget quis dui. Aenean eget sem non ex pulvinar commodo. Aliquam vel justo id ex rutrum faucibus id eu mi.', 'jetpack-mu-wpcom' )
-		),
-		array(
-			wpcom_launchpad_task_component_link(
-				__( 'Learn more about customizing your domain', 'jetpack-mu-wpcom' ),
-				'https://wordpress.com/support/domains/customize-your-domain/'
-			),
-			wpcom_launchpad_task_component_link(
-				__( 'Help', 'jetpack-mu-wpcom' ),
-				'https://wordpress.com/support/domains/customize-your-domain/'
-			),
-		),
-	);
+	return apply_filters( 'wpcom_launchpad_domain_customize_body', null );
 }
